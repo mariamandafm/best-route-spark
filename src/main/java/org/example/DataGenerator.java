@@ -1,11 +1,14 @@
 package org.example;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Random;
 
 public class DataGenerator {
-    private static final long FILE_SIZE = 200L * 1024 * 1024; // 200MB
-    private static final String FILE_NAME = "coordenadas_200MB.csv";
+    //private static final long FILE_SIZE = 200L * 1024 * 1024; // 200MB
+    private static final long FILE_SIZE = 50L * 1024 * 1024; // 50MB
+    //private static final long FILE_SIZE = 1000L * 1024 * 1024; // 1GB
+    private static final String FILE_NAME = "coordenadas_50MB.csv";
 
     private static final String[] CIDADES = {
             "São Paulo", "Rio de Janeiro", "Belo Horizonte", "Porto Alegre", "Curitiba",
@@ -16,6 +19,8 @@ public class DataGenerator {
     private static final int GROUP_SIZE = 50_000;
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
+
         Random random = new Random();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
@@ -24,7 +29,7 @@ public class DataGenerator {
             int currentGroup = 1;
 
             // Escreve cabeçalho CSV
-            String header = "latitude,longitude,grupo\n";
+            String header = "latitude;longitude;grupo\n";
             writer.write(header);
             currentSize += header.getBytes().length;
 
@@ -53,7 +58,7 @@ public class DataGenerator {
         double latitude = coords[0] + (random.nextDouble() - 0.5) * 0.1;
         double longitude = coords[1] + (random.nextDouble() - 0.5) * 0.1;
 
-        return String.format("%.6f,%.6f,%d\n", latitude, longitude, groupId);
+        return String.format("%.6f;%.6f;%d\n", latitude, longitude, groupId);
     }
 
     private static double[] getCityCoordinates(String cidade) {
